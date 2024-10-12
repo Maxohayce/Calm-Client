@@ -10,7 +10,6 @@ const Chatbox = () => {
     const [isJoined, setIsJoined] = useState(false);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const [userImage, setUserImage] = useState(null);
 
     const messagesEndRef = useRef(null);
 
@@ -51,18 +50,16 @@ const Chatbox = () => {
     };
 
     const getAvatar = (msgInitials) => {
-        if (userImage) {
-            return <img src={userImage} alt="avatar" className="w-10 h-10 rounded-full" />;
-        } else {
-            const initialsArr = msgInitials.split(' ');
-            const avatarInitials = initialsArr.slice(0, 2).map(word => word[0].toUpperCase()).join('');
-            return (
-                <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">
-                    {avatarInitials}
-                </div>
-            );
-        }
+        const initialsArr = msgInitials.split(' ');
+        const avatarInitials = initialsArr.slice(0, 2).map(word => word[0].toUpperCase()).join('');
+
+        return (
+            <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">
+                {avatarInitials}
+            </div>
+        );
     };
+
 
     return (
         <div className={`fixed bottom-4 right-4 w-96 bg-white shadow-xl rounded-lg transition-all ease-in-out duration-700 ${isExpanded ? 'h-128' : 'h-32'}`}>
