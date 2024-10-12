@@ -48,7 +48,7 @@ const Home = () => {
                             </span>
                         </div>
                     </div>
-                    <img className="w-[32rem] h-[14] bg-yellow-400" src={sidePic} />
+                    <img className="w-[32rem] h-[14] bg-yellow-400" src={sidePic} alt="sidePic" />
                 </div>
             </section>
             <Chatbox />
