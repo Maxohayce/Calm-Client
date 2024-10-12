@@ -1,6 +1,7 @@
 import React from "react";
 import { PencilIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import background from "../assets/background.jpg"; // Ensure you have the correct path to the background image
+import sidePic from "../assets/carousel-one.jpg";
 import Chatbox from "../components/chatbox";
 
 const Home = () => {
@@ -47,7 +48,7 @@ const Home = () => {
                             </span>
                         </div>
                     </div>
-                    <div className="w-[32rem] h-[14] bg-yellow-400"></div>
+                    <img className="w-[32rem] h-[14] bg-yellow-400" src={sidePic} />
                 </div>
             </section>
             <Chatbox />
