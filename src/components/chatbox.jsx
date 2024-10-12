@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { io } from 'socket.io-client';
 import { ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronRightIcon, PaperAirplaneIcon } from '@heroicons/react/20/solid';
+import Pusher from 'pusher-js';
 
-const socket = io('https://calm-api.vercel.app');
+// Initialize Pusher outside of the component
+const pusher = new Pusher('7cf21568de4332a92a43', {
+    cluster: 'EU',
+    forceTLS: true,
+});
 
 const Chatbox = () => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -18,14 +22,16 @@ const Chatbox = () => {
     };
 
     useEffect(() => {
-        socket.on('chat message', (msg) => {
+        const channel = pusher.subscribe('chat');
+        channel.bind('chat-message', (msg) => {
             setMessages((prevMessages) => [...prevMessages, msg]);
         });
 
         return () => {
-            socket.off('chat message');
+            channel.unbind('chat-message');
+            channel.unsubscribe();
         };
-    }, []);
+    }, []); // No need for pusher as a dependency
 
     useEffect(() => {
         scrollToBottom();
@@ -41,10 +47,17 @@ const Chatbox = () => {
         }
     };
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         if (message.trim()) {
             const msg = { initials, text: message, time: new Date().toLocaleTimeString() };
-            socket.emit('chat message', msg);
+
+            await fetch('http://calm-api.vercel.app/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(msg),
+            });
             setMessage('');
         }
     };
@@ -59,7 +72,6 @@ const Chatbox = () => {
             </div>
         );
     };
-
 
     return (
         <div className={`fixed bottom-4 right-4 w-96 bg-white shadow-xl rounded-lg transition-all ease-in-out duration-700 ${isExpanded ? 'h-128' : 'h-32'}`}>
