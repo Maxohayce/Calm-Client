@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronRightIcon, PaperAirplaneIcon } from '@heroicons/react/20/solid';
 
-const socket = io('https://calm-api.vercel.app/');
+const socket = io('https://calm-api.vercel.app');
 
 const Chatbox = () => {
     const [isExpanded, setIsExpanded] = useState(false);
