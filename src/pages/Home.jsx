@@ -1,6 +1,6 @@
 import React from "react";
 import { PencilIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import background from "../assets/background.jpg"; // Ensure you have the correct path to the background image
+import background from "../assets/background.jpg";
 import sidePic from "../assets/carousel-one.jpg";
 import Chatbox from "../components/chatbox";
 
