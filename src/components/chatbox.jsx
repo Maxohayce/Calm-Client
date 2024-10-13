@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronRightIcon, PaperAirplaneIcon } from '@heroicons/react/20/solid';
 import Pusher from 'pusher-js';
 
-const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
-    cluster: process.env.REACT_APP_PUSHER_CLUSTER,
+const pusher = new Pusher('7cf21568de4332a92a43', {
+    cluster: 'EU',
     forceTLS: true,
 });
 
@@ -50,7 +50,7 @@ const Chatbox = () => {
         if (message.trim()) {
             const msg = { initials, text: message, time: new Date().toLocaleTimeString() };
 
-            await fetch('https://calm-api.vercel.app', { // Ensure this matches your server endpoint
+            await fetch('https://calm-api.vercel.app/messages', { // Ensure this matches your server endpoint
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
