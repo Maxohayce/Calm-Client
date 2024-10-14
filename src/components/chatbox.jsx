@@ -46,7 +46,7 @@ const Chatbox = () => {
         }
     };
 
-    const handleSendMessage = async () => {
+   const handleSendMessage = async () => {
         if (message.trim()) {
             const msg = { initials, text: message, time: new Date().toLocaleTimeString() };
 
