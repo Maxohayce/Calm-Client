@@ -5,6 +5,11 @@ import Pusher from 'pusher-js';
 const pusher = new Pusher('7cf21568de4332a92a43', {
     cluster: 'EU',
     forceTLS: true,
+    disableStats: true,
+    wsHost: 'ws.pusherapp.com', 
+    wsPort: 443,
+    wssPort: 443,
+    enabledTransports: ['ws'],
 });
 
 const Chatbox = () => {
