@@ -5,11 +5,6 @@ import Pusher from 'pusher-js';
 const pusher = new Pusher('7cf21568de4332a92a43', {
     cluster: 'EU',
     forceTLS: true,
-    disableStats: true,
-    wsHost: 'ws.pusherapp.com', 
-    wsPort: 443,
-    wssPort: 443,
-    enabledTransports: ['ws'],
 });
 
 const Chatbox = () => {
@@ -51,12 +46,12 @@ const Chatbox = () => {
         }
     };
 
-   const handleSendMessage = async () => {
+    const handleSendMessage = async () => {
         if (message.trim()) {
             const msg = { initials, text: message, time: new Date().toLocaleTimeString() };
 
             try {
-                const response = await fetch('https://calm-api.vercel.app/messages', {
+                const response = await fetch('http://localhost:4000/messages', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
