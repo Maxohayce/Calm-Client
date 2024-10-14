@@ -46,12 +46,12 @@ const Chatbox = () => {
         }
     };
 
-   const handleSendMessage = async () => {
+    const handleSendMessage = async () => {
         if (message.trim()) {
             const msg = { initials, text: message, time: new Date().toLocaleTimeString() };
 
             try {
-                const response = await fetch('https://calm-api.vercel.app/messages', {
+                const response = await fetch('http://localhost:4000/messages', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
