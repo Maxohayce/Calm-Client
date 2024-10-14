@@ -50,16 +50,28 @@ const Chatbox = () => {
         if (message.trim()) {
             const msg = { initials, text: message, time: new Date().toLocaleTimeString() };
 
-            await fetch('https://calm-api.vercel.app', { // Ensure this matches your server endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(msg),
-            });
-            setMessage('');
+            try {
+                const response = await fetch('https://calm-api.vercel.app/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(msg),
+                });
+
+                if (!response.ok) {
+                    console.error("Failed to send message:", response.statusText);
+                } else {
+                    console.log("Message sent successfully");
+                }
+
+                setMessage('');
+            } catch (error) {
+                console.error("Error sending message:", error);
+            }
         }
     };
+
 
     const getAvatar = (msgInitials) => {
         const initialsArr = msgInitials.split(' ');
