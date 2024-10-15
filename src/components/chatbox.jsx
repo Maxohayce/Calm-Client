@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronRightIcon, PaperAirplaneIcon } from '@heroicons/react/20/solid';
 import Pusher from 'pusher-js';
+import Spinner from './Spinner';
 
 const pusher = new Pusher('7cf21568de4332a92a43', {
     cluster: 'EU',
@@ -13,6 +14,7 @@ const Chatbox = () => {
     const [isJoined, setIsJoined] = useState(false);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const [isSending, setIsSending] = useState(false);
 
     const messagesEndRef = useRef(null);
 
@@ -49,6 +51,7 @@ const Chatbox = () => {
     const handleSendMessage = async () => {
         if (message.trim()) {
             const msg = { initials, text: message, time: new Date().toLocaleTimeString() };
+            setIsSending(true);
 
             try {
                 const response = await fetch('https://calm-api.vercel.app/messages', {
@@ -68,10 +71,11 @@ const Chatbox = () => {
                 setMessage('');
             } catch (error) {
                 console.error("Error sending message:", error);
+            } finally {
+                setIsSending(false);
             }
         }
     };
-
 
     const getAvatar = (msgInitials) => {
         const initialsArr = msgInitials.split(' ');
@@ -85,7 +89,8 @@ const Chatbox = () => {
     };
 
     return (
-        <div className={`fixed bottom-4 right-4 w-96 bg-white shadow-xl rounded-lg transition-all ease-in-out duration-700 ${isExpanded ? 'h-128' : 'h-32'}`}>
+        <div className={`fixed bottom-4 right-4 lg:w-96 w-[22.5rem] bg-white shadow-xl rounded-lg transition-all duration-700 ease-in-out 
+            ${isExpanded ? 'max-h-[40rem]' : 'max-h-32'} overflow-hidden`}>
             <div className="flex flex-col justify-between p-4">
                 <div className="flex justify-between items-center mb-2">
                     <h5 className="font-bold">Chat Room</h5>
@@ -97,7 +102,7 @@ const Chatbox = () => {
                         )}
                     </button>
                 </div>
-                <p className={`transition-opacity ease-in-out duration-700`}>
+                <p className={`transition-opacity ease-in-out duration-500 `}>
                     Connect with fellow APRNs anonymously to share experiences and support each other.
                 </p>
             </div>
@@ -131,19 +136,19 @@ const Chatbox = () => {
                         {messages.map((msg, index) => (
                             <div
                                 key={index}
-                                className={`flex items-start mb-4 ${msg.initials === initials ? 'justify-end' : 'justify-start'}`}
+                                className={`flex items-start justify-between mb-4 ${msg.initials === initials ? 'justify-end' : 'justify-start'}`}
                             >
                                 <div className="relative">
                                     {getAvatar(msg.initials)}
                                     <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
                                 </div>
 
-                                <div className={`ml-2 max-w-xs text-left`}>
+                                <div className={`pr-3 w-4/5 text-left`}>
                                     <div className="flex justify-between items-center mb-1">
                                         <span className="font-bold">{msg.initials}</span>
                                         <span className="text-xs text-gray-500">{msg.time}</span>
                                     </div>
-                                    <div className={`p-2 rounded-md ${msg.initials === initials ? 'bg-black text-white' : 'bg-slate-100 text-black'}`}>
+                                    <div className={`p-2 w-full rounded-md ${msg.initials === initials ? 'bg-black text-white' : 'bg-slate-100 text-black'}`}>
                                         {msg.text}
                                     </div>
                                 </div>
@@ -158,9 +163,18 @@ const Chatbox = () => {
                             className="w-72 p-2 border rounded-lg"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
+                            disabled={isSending}
                         />
-                        <button onClick={handleSendMessage} className="bg-black p-2 rounded-full text-white ml-3">
-                            <PaperAirplaneIcon className="h-8 w-8" />
+                        <button
+                            onClick={handleSendMessage}
+                            className="bg-black p-2 rounded-full text-white ml-3"
+                            disabled={isSending}
+                        >
+                            {isSending ? (
+                                <Spinner />
+                            ) : (
+                                <PaperAirplaneIcon className="h-8 w-8" />
+                            )}
                         </button>
                     </div>
                 </div>
