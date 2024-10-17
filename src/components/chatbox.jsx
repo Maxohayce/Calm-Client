@@ -12,6 +12,7 @@ const Chatbox = () => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [initials, setInitials] = useState('');
     const [isJoined, setIsJoined] = useState(false);
+    const [isDisclaimerAccepted, setIsDisclaimerAccepted] = useState(false); // State to handle disclaimer
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [isSending, setIsSending] = useState(false);
@@ -45,6 +46,8 @@ const Chatbox = () => {
     const handleJoinChat = () => {
         if (initials.trim()) {
             setIsJoined(true);
+        } else {
+            alert('Please enter exactly two initials.');
         }
     };
 
@@ -78,9 +81,7 @@ const Chatbox = () => {
     };
 
     const getAvatar = (msgInitials) => {
-        const initialsArr = msgInitials.split(' ');
-        const avatarInitials = initialsArr.slice(0, 2).map(word => word[0].toUpperCase()).join('');
-
+        const avatarInitials = msgInitials.toUpperCase();
         return (
             <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">
                 {avatarInitials}
@@ -107,15 +108,54 @@ const Chatbox = () => {
                 </p>
             </div>
             <hr />
-            {isExpanded && !isJoined && (
+            {isExpanded && !isDisclaimerAccepted && (
                 <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4">
-                    <p className="semi-bold">Enter Your initials to get started</p>
+                    <div className="overflow-y-auto h-96 items-end">
+
+                        <div
+
+                            className={`flex items-start justify-between mb-4`}
+                        >
+                            <div className="w-12 h-12 rounded-full flex items-center justify-center text-black font-bold text-sm border ">
+                                CALM
+                                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                            </div>
+
+                            <div className={`pr-3 w-4/5 text-left`}>
+                                <div className="flex justify-start items-center mb-1">
+                                    <span className="font-bold">Disclaimer</span>
+                                </div>
+                                <div className="p-2 w-full rounded-md bg-slate-100 text-black">
+                                    Welcome to our chat room. This is just a platform to vent and decompress after a work day. Please be advised of the following essential points: <br /><br />
+                                    <b>1. No Monitoring: </b> This chat room is not actively monitored. Participants are responsible for their interactions and content shared within this space. <br /><br />
+                                    <b>2. No Medical Advice: </b> The discussions and content in this chat room do not constitute medical advice. Participants must consult a qualified healthcare professional for medical concerns, diagnoses, or treatments. <br /> <br />
+                                    <b>3. Personal Responsibility: </b>Your participation in this chat room comes with the empowerment to take full responsibility for your contributions and interactions. Please exercise caution and respect when sharing personal information or advice. <br /><br />
+                                    <b>4. Community Guidelines: </b> We encourage a respectful and supportive environment. However, due to the unmonitored nature of this chat room, we cannot guarantee all participants' adherence to these guidelines. <br /><br />
+                                    <b>5. Limitation of Liability:</b> The administrators of this chat room are not liable for any content shared by participants or any actions taken based on discussions within this space. <br /><b></b>
+                                    You acknowledge and accept this disclaimer by continuing to use this chat room.
+                                </div>
+                            </div>
+                        </div>
+                        <div ref={messagesEndRef} />
+
+                        <button
+                            className="outline outline-gray-200 rounded-3xl w-36 font-bold p-1 self-end item-end text-gray-500"
+                            onClick={() => setIsDisclaimerAccepted(true)}
+                        >
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            )}
+            {isExpanded && isDisclaimerAccepted && !isJoined && (
+                <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4">
+                    <p className="semi-bold">Enter Your initials to get started (2 characters only)</p>
                     <input
                         type="text"
                         placeholder="Enter your initials..."
                         className="w-full mt-2 p-2 border rounded-lg"
                         value={initials}
-                        onChange={(e) => setInitials(e.target.value)}
+                        onChange={(e) => setInitials(e.target.value.toUpperCase())}
                     />
                     <span className="flex justify-between items-center w-[11.8rem] mt-4">
                         <button
@@ -148,7 +188,7 @@ const Chatbox = () => {
                                         <span className="font-bold">{msg.initials}</span>
                                         <span className="text-xs text-gray-500">{msg.time}</span>
                                     </div>
-                                    <div className={`p-2 w-full rounded-md ${msg.initials === initials ? 'bg-black text-white' : 'bg-slate-100 text-black'}`}>
+                                    <div className={`p-2 w-full rounded-md ${msg.initials === initials ? 'bg-[#0B4350] text-white' : 'bg-slate-100 text-black'}`}>
                                         {msg.text}
                                     </div>
                                 </div>
