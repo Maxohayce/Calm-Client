@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronRightIcon, PaperAirplaneIcon } from '@heroicons/react/20/solid';
+import { ChevronDoubleDownIcon, ChevronDoubleUpIcon, PaperAirplaneIcon } from '@heroicons/react/20/solid';
 import Pusher from 'pusher-js';
 import Spinner from './Spinner';
 
@@ -44,7 +44,7 @@ const Chatbox = () => {
     };
 
     const handleJoinChat = () => {
-        if (initials.trim()) {
+        if (initials.trim() && initials.length === 2) {
             setIsJoined(true);
         } else {
             alert('Please enter exactly two initials.');
@@ -109,14 +109,10 @@ const Chatbox = () => {
             </div>
             <hr />
             {isExpanded && !isDisclaimerAccepted && (
-                <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4">
-                    <div className="overflow-y-auto h-96 items-end">
-
-                        <div
-
-                            className={`flex items-start justify-between mb-4`}
-                        >
-                            <div className="w-12 h-12 rounded-full flex items-center justify-center text-black font-bold text-sm border ">
+                <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4 flex flex-col justify-between h-full">
+                    <div className="overflow-y-auto no-scrollbar h-[26rem]">
+                        <div className={`flex items-start justify-between mb-4`}>
+                            <div className="relative w-12 h-12 rounded-full flex items-center justify-center text-black font-bold text-sm border">
                                 CALM
                                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
                             </div>
@@ -131,31 +127,33 @@ const Chatbox = () => {
                                     <b>2. No Medical Advice: </b> The discussions and content in this chat room do not constitute medical advice. Participants must consult a qualified healthcare professional for medical concerns, diagnoses, or treatments. <br /> <br />
                                     <b>3. Personal Responsibility: </b>Your participation in this chat room comes with the empowerment to take full responsibility for your contributions and interactions. Please exercise caution and respect when sharing personal information or advice. <br /><br />
                                     <b>4. Community Guidelines: </b> We encourage a respectful and supportive environment. However, due to the unmonitored nature of this chat room, we cannot guarantee all participants' adherence to these guidelines. <br /><br />
-                                    <b>5. Limitation of Liability:</b> The administrators of this chat room are not liable for any content shared by participants or any actions taken based on discussions within this space. <br /><b></b>
+                                    <b>5. Limitation of Liability:</b> The administrators of this chat room are not liable for any content shared by participants or any actions taken based on discussions within this space.
+                                    <br /><br />
                                     You acknowledge and accept this disclaimer by continuing to use this chat room.
                                 </div>
                             </div>
                         </div>
-                        <div ref={messagesEndRef} />
-
-                        <button
-                            className="outline outline-gray-200 rounded-3xl w-36 font-bold p-1 self-end item-end text-gray-500"
-                            onClick={() => setIsDisclaimerAccepted(true)}
-                        >
-                            Continue
-                        </button>
+                        <div className="flex justify-end items-end pb-2 pr-4">
+                            <button
+                                className="outline bg-[#0B4350] rounded-3xl w-36 font-bold p-1 text-white"
+                                onClick={() => setIsDisclaimerAccepted(true)}
+                            >
+                                Continue
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
             {isExpanded && isDisclaimerAccepted && !isJoined && (
                 <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4">
-                    <p className="semi-bold">Enter Your initials to get started (2 characters only)</p>
+                    <p className="semi-bold">Enter Your initials to get started</p>
                     <input
                         type="text"
-                        placeholder="Enter your initials..."
+                        placeholder="example 'IJ'"
                         className="w-full mt-2 p-2 border rounded-lg"
                         value={initials}
                         onChange={(e) => setInitials(e.target.value.toUpperCase())}
+                        maxLength={2}
                     />
                     <span className="flex justify-between items-center w-[11.8rem] mt-4">
                         <button
@@ -164,15 +162,12 @@ const Chatbox = () => {
                         >
                             Join Chat
                         </button>
-                        <button className="outline outline-white p-1 rounded-full">
-                            <ChevronRightIcon className="h-8 w-8 rounded-full bg-white" />
-                        </button>
                     </span>
                 </div>
             )}
             {isJoined && (
                 <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4">
-                    <div className="overflow-y-auto h-96">
+                    <div className="overflow-y-auto no-scrollbar h-[26rem]">
                         {messages.map((msg, index) => (
                             <div
                                 key={index}
@@ -207,7 +202,7 @@ const Chatbox = () => {
                         />
                         <button
                             onClick={handleSendMessage}
-                            className="bg-black p-2 rounded-full text-white ml-3"
+                            className="bg-[#0B4350] p-2 rounded-full text-white ml-3"
                             disabled={isSending}
                         >
                             {isSending ? (
