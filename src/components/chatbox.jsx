@@ -90,10 +90,10 @@ const Chatbox = () => {
     };
 
     return (
-        <div className={`fixed bottom-4 right-4 lg:w-96 w-[22.5rem] bg-white shadow-xl rounded-lg transition-all duration-700 ease-in-out 
-            ${isExpanded ? 'max-h-[40rem]' : 'max-h-32'} overflow-hidden`}>
-            <div className="flex flex-col justify-between p-4">
-                <div className="flex justify-between items-center mb-2">
+        <div className={`fixed top-0 left-0 w-screen h-full bg-white shadow-xl rounded-lg transition-all duration-700 ease-in-out 
+            ${isExpanded ? 'max-h-[40rem]' : 'max-h-32'} overflow-hidden z-50`}>
+            <div className="flex flex-col justify-between p-4 w-full">
+                <div className="flex justify-between items-center mb-2 w-full">
                     <h5 className="font-bold">Chat Room</h5>
                     <button onClick={handleToggle} className="text-gray-500">
                         {isExpanded ? (
@@ -109,8 +109,8 @@ const Chatbox = () => {
             </div>
             <hr />
             {isExpanded && !isDisclaimerAccepted && (
-                <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4 flex flex-col justify-between h-full">
-                    <div className="overflow-y-auto no-scrollbar h-[26rem]">
+                <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4 flex flex-col w-full justify-between h-full">
+                    <div className="overflow-y-auto no-scrollbar h-[26rem] w-full">
                         <div className={`flex items-start justify-between mb-4`}>
                             <div className="relative w-12 h-12 rounded-full flex items-center justify-center text-black font-bold text-sm border">
                                 CALM
@@ -166,8 +166,8 @@ const Chatbox = () => {
                 </div>
             )}
             {isJoined && (
-                <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4">
-                    <div className="overflow-y-auto no-scrollbar h-[26rem]">
+                <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4 w-full">
+                    <div className="overflow-y-auto no-scrollbar h-[26rem] w-full">
                         {messages.map((msg, index) => (
                             <div
                                 key={index}
@@ -191,11 +191,11 @@ const Chatbox = () => {
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
-                    <div className="flex mt-4">
+                    <div className="flex mt-4 w-full">
                         <input
                             type="text"
                             placeholder="Type your message..."
-                            className="w-72 p-2 border rounded-lg"
+                            className="flex-1 p-2 border rounded-lg"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             disabled={isSending}
