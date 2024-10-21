@@ -9,7 +9,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="flex justify-between items-center bg-white px-4 md:px-8 h-16 rounded font-semibold fixed top-0 left-0 z-20 shadow-md w-full mt-4 md:left-[11.5rem] md:w-[72rem]">
+        <nav className="hidden justify-between items-center bg-white px-4 md:px-8 h-16 rounded font-semibold fixed top-0 left-0 z-20 shadow-md w-full mt-4 md:left-[11.5rem] md:w-[72rem]">
             <h5 className="text-lg font-bold">CALM</h5>
 
             {/* Hamburger icon for small screens */}

@@ -90,8 +90,8 @@ const Chatbox = () => {
     };
 
     return (
-        <div className={`fixed top-0 left-0 w-screen h-full bg-white shadow-xl rounded-lg transition-all duration-700 ease-in-out 
-            ${isExpanded ? 'max-h-[40rem]' : 'max-h-32'} overflow-hidden z-50`}>
+        <div className={`absolute w-screen bottom-0 bg-white shadow-xl rounded-lg transition-all duration-700 ease-in-out 
+            ${isExpanded ? 'max-h-screen' : 'max-h-32'} overflow-hidden z-50`}>
             <div className="flex flex-col justify-between p-4 w-full">
                 <div className="flex justify-between items-center mb-2 w-full">
                     <h5 className="font-bold">Chat Room</h5>

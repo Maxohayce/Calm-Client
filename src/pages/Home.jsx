@@ -6,7 +6,7 @@ import Chatbox from "../components/chatbox";
 
 const Home = () => {
     return (
-        <div className="relative flex flex-col items-center w-full">
+        <div className="relative h-screen flex flex-col items-center w-full bg-[#b8e3e9]">
             <img className="absolute inset-0 w-full h-[28rem] md:h-[34rem] object-cover z-0 hidden" src={background} alt="Background" />
             <section className="relative z-10 w-full lg:w-[72rem] h-[24rem] md:h-[30rem] items-start py-8 mt-16 px-4 lg:px-0 hidden">
                 <div className="flex flex-col justify-between w-full md:w-1/3 p-2 h-full">
