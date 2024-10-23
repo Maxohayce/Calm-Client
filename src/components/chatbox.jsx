@@ -12,9 +12,12 @@ const Chatbox = () => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [initials, setInitials] = useState('');
     const [isJoined, setIsJoined] = useState(false);
-    const [isDisclaimerAccepted, setIsDisclaimerAccepted] = useState(false); // State to handle disclaimer
+    const [isDisclaimerAccepted, setIsDisclaimerAccepted] = useState(false);
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(() => {
+        const savedMessages = sessionStorage.getItem('chatMessages');
+        return savedMessages ? JSON.parse(savedMessages) : [];
+    });
     const [isSending, setIsSending] = useState(false);
 
     const messagesEndRef = useRef(null);
@@ -26,7 +29,11 @@ const Chatbox = () => {
     useEffect(() => {
         const channel = pusher.subscribe('chat');
         channel.bind('chat-message', (msg) => {
-            setMessages((prevMessages) => [...prevMessages, msg]);
+            setMessages((prevMessages) => {
+                const updatedMessages = [...prevMessages, msg];
+                sessionStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
+                return updatedMessages;
+            });
         });
 
         return () => {
@@ -57,7 +64,7 @@ const Chatbox = () => {
             setIsSending(true);
 
             try {
-                const response = await fetch('https://calm-api.vercel.app/messages', {
+                const response = await fetch('http://localhost:4000/messages', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -191,6 +198,7 @@ const Chatbox = () => {
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
+
                     <div className="flex mt-4 w-full">
                         <input
                             type="text"
