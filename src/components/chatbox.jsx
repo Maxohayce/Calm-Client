@@ -21,6 +21,7 @@ const Chatbox = () => {
     const [isSending, setIsSending] = useState(false);
 
     const messagesEndRef = useRef(null);
+    const chatboxRef = useRef(null);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -45,6 +46,21 @@ const Chatbox = () => {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    // Function to send the height to the parent window
+    const updateIframeHeight = () => {
+        if (chatboxRef.current) {
+            const chatboxHeight = chatboxRef.current.offsetHeight;
+            window.parent.postMessage({ chatboxHeight }, '*');
+            // console.log('height', chatboxHeight)
+            // console.log('window.parent', window.parent)
+        }
+    };
+
+    useEffect(() => {
+        // Update iframe height on component mount and any time `isExpanded`, `isJoined`, or `isDisclaimerAccepted` changes
+        updateIframeHeight();
+    }, [isExpanded, isJoined, isDisclaimerAccepted]);
 
     const handleToggle = () => {
         setIsExpanded(!isExpanded);
@@ -97,7 +113,7 @@ const Chatbox = () => {
     };
 
     return (
-        <div className={`absolute w-screen bottom-0 bg-white shadow-xl rounded-lg transition-all duration-700 ease-in-out 
+        <div ref={chatboxRef} className={`absolute w-screen bottom-0 bg-white shadow-xl rounded-lg transition-all duration-700 ease-in-out 
             ${isExpanded ? 'max-h-screen' : 'max-h-32'} overflow-hidden z-50`}>
             <div className="flex flex-col justify-between p-4 w-full">
                 <div className="flex justify-between items-center mb-2 w-full">
