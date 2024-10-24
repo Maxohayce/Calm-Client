@@ -82,7 +82,7 @@ const Chatbox = () => {
             setIsSending(true);
 
             try {
-                const response = await fetch('http://localhost:4000/messages', {
+                const response = await fetch('https://calm-api.vercel.app/messages', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
