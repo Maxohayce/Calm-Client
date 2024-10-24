@@ -73,11 +73,16 @@ const Chatbox = () => {
 
     const handleSendMessage = async () => {
         if (message.trim()) {
-            const msg = { initials, text: message, time: new Date().toLocaleTimeString() };
+            const now = new Date();
+
+            // Format the date and time without seconds
+            const formattedDateTime = `${now.toLocaleDateString()} ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+            const msg = { initials, text: message, time: formattedDateTime };
             setIsSending(true);
 
             try {
-                const response = await fetch('https://calm-api.vercel.app/messages', {
+                const response = await fetch('http://localhost:4000/messages', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -99,6 +104,7 @@ const Chatbox = () => {
             }
         }
     };
+
 
     const getAvatar = (msgInitials) => {
         const avatarInitials = msgInitials.toUpperCase();
@@ -220,6 +226,11 @@ const Chatbox = () => {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             disabled={isSending}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !isSending) {
+                                    handleSendMessage();
+                                }
+                            }}
                         />
                         <button
                             onClick={handleSendMessage}
