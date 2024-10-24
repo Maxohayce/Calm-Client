@@ -47,13 +47,10 @@ const Chatbox = () => {
         scrollToBottom();
     }, [messages]);
 
-    // Function to send the height to the parent window
     const updateIframeHeight = () => {
         if (chatboxRef.current) {
             const chatboxHeight = chatboxRef.current.offsetHeight;
             window.parent.postMessage({ chatboxHeight }, '*');
-            // console.log('height', chatboxHeight)
-            // console.log('window.parent', window.parent)
         }
     };
 
@@ -114,7 +111,7 @@ const Chatbox = () => {
 
     return (
         <div ref={chatboxRef} className={`absolute w-screen bottom-0 bg-white shadow-xl rounded-lg transition-all duration-700 ease-in-out 
-            ${isExpanded ? 'max-h-screen' : 'max-h-32'} overflow-hidden z-50`}>
+             overflow-hidden z-50`}>
             <div className="flex flex-col justify-between p-4 w-full">
                 <div className="flex justify-between items-center mb-2 w-full">
                     <h5 className="font-bold">Chat Room</h5>
@@ -188,7 +185,7 @@ const Chatbox = () => {
                     </span>
                 </div>
             )}
-            {isJoined && (
+            {isExpanded && isJoined && (
                 <div className="transition-opacity ease-in-out duration-700 opacity-100 p-4 w-full">
                     <div className="overflow-y-auto no-scrollbar h-[26rem] w-full">
                         {messages.map((msg, index) => (
